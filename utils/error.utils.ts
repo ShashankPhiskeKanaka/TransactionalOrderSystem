@@ -13,6 +13,11 @@ class globalErrorHandlerClass {
     handleError = ( err: any, req: Request, res: Response, next: NextFunction ) => {
         logUtil.logError({ status: err.status ?? 500, message : err.message });
 
+        if(err.status == 403) {
+            res.clearCookie("accessToken");
+            res.clearCookie("refreshToken");
+        }
+
         return res.status(err.status ?? 500).json({
             success : false,
             message : err.message

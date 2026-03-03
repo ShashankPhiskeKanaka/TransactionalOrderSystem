@@ -69,7 +69,8 @@ class userPgRepositoryClass extends userMethodsClass {
                 deletedAt: null
             },
             data : {
-                deletedAt : new Date()
+                deletedAt : new Date(),
+                email : id
             }
         });
 

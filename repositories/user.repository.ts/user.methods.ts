@@ -14,7 +14,6 @@ interface userType {
 }
 
 interface provideUserType{
-    role: string
     name: string
     email: string
     password: string

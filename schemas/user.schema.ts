@@ -12,4 +12,12 @@ const createUserSchema = z.object({
     })
 });
 
-export { createUserSchema }
+const updateUserSchema = z.object({
+    body : z.object({
+        name : z.string({ error : errorMessage.INVALIDDATA.message }).trim().optional(),
+        email : z.string({ error : errorMessage.INVALIDDATA.message }).trim().regex(emailRegex, { error: errorMessage.INVALIDDATA.message }).optional(),
+        password : z.string({ error: errorMessage.INVALIDDATA.message }).trim().regex(passRegex, { error : errorMessage.INVALIDDATA.message }).optional(),
+    })
+});
+
+export { createUserSchema, updateUserSchema }

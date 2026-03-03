@@ -2,9 +2,11 @@ import express from "express"
 import dotenv from "dotenv"
 import { globalErrorHandler } from "./factory/utils.factory.js";
 import { authRouter } from "./routers/auth.router.js";
-import { userRouter } from "./routers/user.router.js";
+import { userRouter } from "./routers/user.routers/user.router.js";
 import cookieParser from "cookie-parser"
 import { connectPrisma } from "./db/prisma.js";
+import { walletRouter } from "./routers/wallet.routers/wallet.router.js";
+import { walletsRouter } from "./routers/wallet.routers/wallets.router.js";
 dotenv.config();
 
 const app = express();
@@ -12,7 +14,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/v1/auth", authRouter);
+
 app.use("/v1/user", userRouter);
+app.use("/v1/users", userRouter);
+
+app.use("/v1/wallet", walletRouter);
+app.use("/v1/wallets", walletsRouter);
 
 app.use(globalErrorHandler.handleError);
 
