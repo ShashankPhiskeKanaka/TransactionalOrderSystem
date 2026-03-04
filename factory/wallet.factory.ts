@@ -1,5 +1,5 @@
 import { walletControllerClass } from "../controllers/wallet.controller.js";
-import { walletPgRepositoryClass } from "../repositories/wallet.repository.ts/wallet.pgrepository.js";
+import { walletPgRepositoryClass } from "../repositories/wallet.repository/wallet.pgrepository.js";
 import { walletServicesClass } from "../services/wallet.services.js";
 
 class walletFactory {

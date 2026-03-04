@@ -6,7 +6,9 @@ import dotenv from "dotenv"
 dotenv.config();
 
 const pool = new pg.Pool({
-    connectionString : process.env.DATABASE_URL
+    connectionString : process.env.DATABASE_URL,
+    max: 10, // maximum number of clients
+    idleTimeoutMillis: 30000
 })
 
 const adapter = new PrismaPg(pool);

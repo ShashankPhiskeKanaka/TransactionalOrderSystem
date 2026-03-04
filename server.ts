@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser"
 import { connectPrisma } from "./db/prisma.js";
 import { walletRouter } from "./routers/wallet.routers/wallet.router.js";
 import { walletsRouter } from "./routers/wallet.routers/wallets.router.js";
+import { orderRouter } from "./routers/order.router.js";
+import { productRouter } from "./routers/product.router.js";
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,10 @@ app.use("/v1/users", userRouter);
 
 app.use("/v1/wallet", walletRouter);
 app.use("/v1/wallets", walletsRouter);
+
+app.use("/v1/order", orderRouter);
+
+app.use("/v1/product", productRouter);
 
 app.use(globalErrorHandler.handleError);
 

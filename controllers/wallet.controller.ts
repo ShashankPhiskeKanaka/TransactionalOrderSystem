@@ -26,8 +26,17 @@ class walletControllerClass {
         });
     }
 
-    update = async (req: Request, res : Response) => {
-        const wallet = await this.walletService.update(req.body, req.user);
+    incrementBalance = async (req: Request, res : Response) => {
+        const wallet = await this.walletService.incrementBalance(req.body, req.user);
+        return res.json({
+            success : true,
+            message : walletResponse.UPDATED,
+            data : wallet
+        });
+    }
+
+    decrementBalance = async (req: Request, res : Response) => {
+        const wallet = await this.walletService.decrementBalance(req.body, req.user);
         return res.json({
             success : true,
             message : walletResponse.UPDATED,

@@ -6,10 +6,10 @@ class orderItemsPgRepositoryClass extends orderItemsMethodClass {
     create = async (data: provideOrderItemType): Promise<orderItemType> => {
         const newOrderItems = await prisma.orderItems.create({
             data: {
-                items : data.items as Prisma.InputJsonValue,
-                order: {
-                    connect: { id: data.orderId }
-                }
+                productId : data.productId,
+                quantity : data.quantity,
+                purchasedPrice: data.purchasedPrice,
+                orderId : data.orderId,
             }
         });
 
@@ -31,20 +31,6 @@ class orderItemsPgRepositoryClass extends orderItemsMethodClass {
         const orderItems = await prisma.orderItems.findMany({
             where: {
                 deletedAt : null
-            }
-        });
-
-        return orderItems;
-    }
-
-    update = async (data: orderItemType): Promise<orderItemType> => {
-        const orderItems = await prisma.orderItems.update({
-            where: {
-                id: data.id,
-                deletedAt: null
-            },
-            data: {
-                items: data.items as Prisma.InputJsonValue
             }
         });
 

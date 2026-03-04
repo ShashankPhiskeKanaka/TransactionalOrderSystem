@@ -11,6 +11,7 @@ const walletController = walletFactory.create();
 walletRouter.use(authMiddleware.authenticate);
 
 walletRouter.post("/", errorHandler.controllerWrapper(validate(fetchWalletSchema)), errorHandler.controllerWrapper(walletController.get));
-walletRouter.post("/", errorHandler.controllerWrapper(validate(fetchWalletSchema)), errorHandler.controllerWrapper(walletController.update));
+walletRouter.patch("/increment", errorHandler.controllerWrapper(walletController.incrementBalance));
+walletRouter.patch("/decrement", errorHandler.controllerWrapper(walletController.decrementBalance));
 
 export { walletRouter }

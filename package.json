@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec tsx server.ts"
+    "dev": "nodemon --exec tsx server.ts",
+    "migrate" : "node-pg-migrate",
+    "migrate:create" : "node-pg-migrate create",
+    "migrate:up" : "node-pg-migrate up",
+    "migrate:down" : "node-pg-migrate down"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +33,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "node-pg-migrate": "^8.0.4",
     "nodemon": "^3.1.14",
     "pg": "^8.19.0",
     "zod": "^4.3.6"

@@ -1,7 +1,7 @@
 import { authControllerClass } from "../controllers/auth.controller.js";
 import { authenticateUserClass } from "../middlewares/authenticate.js";
-import { authPgRepositoryClass } from "../repositories/auth.repository.ts/auth.pgrepository.js";
-import { userPgRepositoryClass } from "../repositories/user.repository.ts/user.pgrepository.js";
+import { authPgRepositoryClass } from "../repositories/auth.repository/auth.pgrepository.js";
+import { userPgRepositoryClass } from "../repositories/user.repository/user.pgrepository.js";
 import { authServicesClass } from "../services/auth.services.js";
 
 class authFactory {

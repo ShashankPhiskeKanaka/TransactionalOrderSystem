@@ -1,5 +1,5 @@
 import type { Decimal } from "@prisma/client/runtime/client";
-import type { userAuthType } from "../user.repository.ts/user.methods.js";
+import type { userAuthType } from "../user.repository/user.methods.js";
 
 interface walletType {
     id : string,
@@ -14,10 +14,11 @@ interface provideWalletType{
 }
 
 abstract class walletMethodsClass {
-    abstract create ( data: walletType, userData: userAuthType ) : Promise<walletType>;
+    abstract create ( userData: userAuthType ) : Promise<walletType>;
     abstract get ( id: string, userData: userAuthType ) : Promise<walletType>;
     abstract getAll () : Promise<walletType[]>;
-    abstract update ( data: walletType, userData: userAuthType ) : Promise<walletType>;
+    abstract incrementBalance( data: walletType, userData: userAuthType ) : Promise<walletType>;
+    abstract decrementBalance( data: walletType, userData: userAuthType ) : Promise<walletType>;
     abstract delete ( id: string, userData: userAuthType ) : Promise<walletType>;
 }
 

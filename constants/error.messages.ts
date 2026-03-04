@@ -14,8 +14,19 @@ const errorMessage = {
     INVALIDDATA: {
         status: 400,
         message: "Please provide valid data"
+    },
+    EXISTS : {
+        status : 409,
+        message : "Resource already exists"
+    },
+    OUTOFSTOCK : {
+        status : 400,
+        message : "Product out of stock"
+    },
+    NOTBALANCE : {
+        status : 400,
+        message : "Not enough balance"
     }
-
 }
 
 export { errorMessage }

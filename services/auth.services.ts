@@ -1,7 +1,7 @@
 import { errorMessage } from "../constants/error.messages.js";
 import { authUtils } from "../factory/utils.factory.js";
-import type { authPgRepositoryClass } from "../repositories/auth.repository.ts/auth.pgrepository.js";
-import type { userPgRepositoryClass } from "../repositories/user.repository.ts/user.pgrepository.js";
+import type { authPgRepositoryClass } from "../repositories/auth.repository/auth.pgrepository.js";
+import type { userPgRepositoryClass } from "../repositories/user.repository/user.pgrepository.js";
 import { serverError } from "../utils/error.utils.js";
 import crypto from "crypto"
 

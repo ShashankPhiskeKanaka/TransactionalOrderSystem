@@ -1,13 +1,37 @@
+import { errorMessage } from "../../constants/error.messages.js";
 import { prisma } from "../../db/prisma.js";
+import { serverError } from "../../utils/error.utils.js";
 import { userMethodsClass, type provideUserType, type userType } from "./user.methods.js";
 
 class userPgRepositoryClass extends userMethodsClass {
-    create = async ( data : provideUserType ) : Promise<userType> => {
-        const newUser = await prisma.users.create({
-            data : data
-        });
+    create = async ( data : provideUserType ) : Promise<any> => {
+        return await prisma.$transaction(async (tx) => {
+            try{
+                const newUser = await tx.users.create({
+                    data : {
+                        name : data.name,
+                        email : data.email,
+                        password: data.password,
+                    }
+                });
 
-        return newUser;
+                const newWallet = await tx.wallets.create({
+                    data: {
+                        user: {
+                            connect: { id: newUser.id ?? "" }
+                        }
+                    }
+                });
+
+                return { user: newUser, wallet : newWallet };
+            } catch (err : any) {
+                if(err.code == 'P2002'){
+                    throw new serverError(errorMessage.EXISTS);
+                }
+
+                throw err;
+            }
+        });
     }
 
     get = async ( id: string ) : Promise<userType> => {

@@ -11,6 +11,7 @@ interface userType {
     password : string
     createdAt : Date
     deletedAt : Date | null
+    wallet? : any
 }
 
 interface provideUserType{

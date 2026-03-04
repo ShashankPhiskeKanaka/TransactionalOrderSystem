@@ -24,7 +24,7 @@ class authenticateUserClass {
             res.cookie("refreshToken", refreshToken, { sameSite: true, httpOnly: true, maxAge: 7*24*60*60*1000 });
         }
 
-        const { id, role } = authUtils.decodeAccesstoken(newAccessToken ?? "");
+        const { id, role } = authUtils.decodeAccesstoken(newAccessToken ? newAccessToken : accessToken);
         req.user = { id, role };
 
         next();
@@ -48,7 +48,7 @@ class authenticateUserClass {
             res.cookie("refreshToken", refreshToken, { sameSite: true, httpOnly: true, maxAge: 7*24*60*60*1000 });
         }
 
-        const { id, role } = authUtils.decodeAccesstoken(newAccessToken ?? "");
+        const { id, role } = authUtils.decodeAccesstoken(newAccessToken ? newAccessToken : accessToken);
         if(role !== 'ADMIN'){
             return res.status(errorMessage.UNAUTHORIZED.status).json({
                 success : false,

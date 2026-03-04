@@ -1,4 +1,4 @@
-import type { userAuthType } from "../user.repository.ts/user.methods.js"
+import type { userAuthType } from "../user.repository/user.methods.js"
 
 interface orderType {
     id : string
