@@ -7,6 +7,13 @@ class userPgRepositoryClass extends userMethodsClass {
     create = async ( data : provideUserType ) : Promise<any> => {
         return await prisma.$transaction(async (tx) => {
             try{
+                const user = await tx.$queryRaw<any>`
+                    SELECT * FROM users
+                    WHERE ("deletedAt" IS NULL) AND (email = ${data.email})
+                    FOR UPDATE
+                `
+                if(user) throw new serverError(errorMessage.EXISTS);
+
                 const newUser = await tx.users.create({
                     data : {
                         name : data.name,
@@ -18,7 +25,7 @@ class userPgRepositoryClass extends userMethodsClass {
                 const newWallet = await tx.wallets.create({
                     data: {
                         user: {
-                            connect: { id: newUser.id ?? "" }
+                            connect: { id: newUser.id }
                         }
                     }
                 });
@@ -74,31 +81,50 @@ class userPgRepositoryClass extends userMethodsClass {
         return users;
     }
 
-    update = async (data: any): Promise<userType> => {
-        const user = await prisma.users.update({
-            where : {
-                id: data.id,
-                deletedAt : null
-            },
-            data : data
-        });
+    update = async (data: any): Promise<any> => {
+        return await prisma.$transaction(async (tx) => {
 
-        return user;
+            const [userData] = await tx.$queryRaw<any>`
+                SELECT * FROM users
+                WHERE ("deletedAt" IS NULL) AND ( id = ${data.id} )
+                FOR UPDATE
+            `
+            if(!userData) throw new serverError(errorMessage.NOTFOUND);
+            const user = await tx.users.update({
+                where : {
+                    id: data.id,
+                    deletedAt : null
+                },
+                data : data
+            });
+
+            return user;
+        })
     }
 
-    delete = async ( id: string ) : Promise<userType> => {
-        const user = await prisma.users.update({
-            where : {
-                id: id,
-                deletedAt: null
-            },
-            data : {
-                deletedAt : new Date(),
-                email : id
-            }
-        });
+    delete = async ( id: string ) : Promise<any> => {
+        return await prisma.$transaction(async (tx) => {
 
-        return user;
+            const user = await tx.$queryRaw<any>`
+                SELECT * FROM users
+                WHERE ("deletedAt" IS NULL) AND id = ${id}
+                FOR UPDATE
+            `
+            if(!user) throw new serverError(errorMessage.NOTFOUND);
+
+            const userData = await tx.users.updateMany({
+                where : {
+                    id: id,
+                    deletedAt: null
+                },
+                data : {
+                    deletedAt : new Date(),
+                    email : id
+                }
+            });
+
+            return user;  
+        })
     }
 }
 

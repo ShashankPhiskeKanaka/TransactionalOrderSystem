@@ -1,5 +1,0 @@
-class reportPgRepositoryClass {
-    
-}
-
-export { reportPgRepositoryClass };

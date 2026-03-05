@@ -1,6 +1,6 @@
 interface userAuthType {
-    id? : string
-    role? : string
+    id : string
+    role : string
 }
 
 interface userType {

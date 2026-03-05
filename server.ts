@@ -9,11 +9,15 @@ import { walletRouter } from "./routers/wallet.routers/wallet.router.js";
 import { walletsRouter } from "./routers/wallet.routers/wallets.router.js";
 import { orderRouter } from "./routers/order.router.js";
 import { productRouter } from "./routers/product.router.js";
+import { reportRouter } from "./routers/report.router.js";
+import { logger } from "./middlewares/logger.js";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(logger);
 
 app.use("/v1/auth", authRouter);
 
@@ -26,6 +30,8 @@ app.use("/v1/wallets", walletsRouter);
 app.use("/v1/order", orderRouter);
 
 app.use("/v1/product", productRouter);
+
+app.use("/v1/report", reportRouter);
 
 app.use(globalErrorHandler.handleError);
 

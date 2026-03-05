@@ -9,14 +9,14 @@ import { logUtil } from "../utils/log.utils.js";
 class userServicesClass {
     constructor ( private userMethods : userPgRepositoryClass, private authMethods : authPgRepositoryClass , private walletMethods : walletPgRepositoryClass) {};
 
-    create = async ( data : any ) => {
+    create = async ( data : { password: string, email : string, name : string } ) => {
 
         const hashedPassword = await authUtils.hashPassword(data.password ?? "");
         const userData = await this.userMethods.create({
             ...data,
             password : hashedPassword
         });
-        logUtil.logActivity(`New user with the id : ${userData.user.id} created`);
+        logUtil.logActivity(`New user with the id : ${userData.user.id} and mail ${userData.email} created`);
         logUtil.logActivity(`New wallet with the id : ${userData.wallet.id} created`);
 
         return userData;

@@ -30,6 +30,8 @@ model users {
   orders orders[]
   wallet wallets?
   refreshTokens refreshTokens[]
+
+  @@index([id])
   @@index([id, createdAt])
 }
 
@@ -43,6 +45,7 @@ model products {
 
   orderItems orderItems[]
 
+  @@index([id])
   @@index([id, createdAt])
   @@index([name])
 }
@@ -56,6 +59,7 @@ model orders {
   createdAt DateTime @default(now()) @db.Timestamptz
   deletedAt DateTime? @db.Timestamptz
 
+  @@index([id])
   @@index([userId])
   @@index([id, createdAt])
   @@index([userId, createdAt])
@@ -71,6 +75,7 @@ model wallets {
 
   transactions walletTransactions[]
 
+  @@index([id])
   @@index([userId])
   @@index([id, createdAt])
 }

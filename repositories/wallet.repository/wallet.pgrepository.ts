@@ -1,4 +1,6 @@
+import { errorMessage } from "../../constants/error.messages.js";
 import { prisma } from "../../db/prisma.js";
+import { serverError } from "../../utils/error.utils.js";
 import type { userAuthType } from "../user.repository/user.methods.js";
 import { walletMethodsClass, type provideWalletType, type walletType } from "./wallet.methods.js";
 
@@ -7,7 +9,7 @@ class walletPgRepositoryClass extends walletMethodsClass {
         const newWallet = await prisma.wallets.create({
             data: {
                 user: {
-                    connect: { id: userData.id ?? "" }
+                    connect: { id: userData.id }
                 }
             }
         });
@@ -51,7 +53,14 @@ class walletPgRepositoryClass extends walletMethodsClass {
             if(userData.role !== "ADMIN") {
                 where.userId = userData.id
             }
-            const wallet = await tx.wallets.update({
+
+            const [wallet] = await tx.$queryRaw<any>`
+                SELECT * FROM wallets
+                WHERE ("deletedAt" IS NULL) AND id = ${data.id}
+            `
+            if(!wallet) throw new serverError(errorMessage.NOTFOUND)
+
+            const walletData = await tx.wallets.updateMany({
                 where : where,
                 data : {
                     balance : { increment: data.balance }
@@ -60,9 +69,11 @@ class walletPgRepositoryClass extends walletMethodsClass {
 
             await tx.walletTransactions.create({
                 data: {
-                    walletId : wallet.id,
                     amount: data.balance,
                     type: 'CREDIT',
+                    wallet : {
+                        connect : { id: wallet.id }
+                    }
                 }
             })
 
@@ -80,6 +91,14 @@ class walletPgRepositoryClass extends walletMethodsClass {
             if(userData.role !== "ADMIN") {
                 where.userId = userData.id
             }
+
+            const [walletData] = await tx.$queryRaw<any>`
+                SELECT * FROM wallets
+                WHERE ("deletedAt" IS NULL) AND (id = ${data.id}) AND ( ${userData.id}::uuid IS NULL OR id = ${userData.id} )
+                FOR UPDATE
+            `
+            if(!walletData) throw new serverError(errorMessage.NOTFOUND)
+            
             const wallet = await tx.wallets.update({
                 where : where,
                 data : {
@@ -100,7 +119,7 @@ class walletPgRepositoryClass extends walletMethodsClass {
     }
 
 
-    delete = async (id: string, userData: userAuthType): Promise<walletType> => {
+    delete = async (id: string, userData: userAuthType): Promise<any> => {
         const where : any = {
             id: id,
             deletedAt: null
@@ -109,11 +128,18 @@ class walletPgRepositoryClass extends walletMethodsClass {
         if(userData.role !== "ADMIN") {
             where.userId = userData.id
         }
-        const wallet = await prisma.wallets.delete({
-            where : where
-        });
+        return await prisma.$transaction(async (tx) => {
+            const [walletData] = await tx.$queryRaw<any>`
+                SELECT * FROM wallets
+                WHERE ("deletedAt" IS NULL) AND id = ${id}
+            `
+            if(!walletData) throw new serverError(errorMessage.NOTFOUND)
+            const wallet = await prisma.wallets.delete({
+                where : where
+            });
 
-        return wallet;
+            return wallet;
+        })
     }
 }
 
