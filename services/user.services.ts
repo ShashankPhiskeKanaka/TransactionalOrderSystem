@@ -1,3 +1,4 @@
+import { activityMessagesClass } from "../constants/activity.messages.js";
 import { errorMessage } from "../constants/error.messages.js";
 import { authUtils } from "../factory/utils.factory.js";
 import type { authPgRepositoryClass } from "../repositories/auth.repository/auth.pgrepository.js";
@@ -5,6 +6,8 @@ import type { userPgRepositoryClass } from "../repositories/user.repository/user
 import type { walletPgRepositoryClass } from "../repositories/wallet.repository/wallet.pgrepository.js";
 import { serverError } from "../utils/error.utils.js";
 import { logUtil } from "../utils/log.utils.js";
+
+const activityMessage = new activityMessagesClass("User");
 
 class userServicesClass {
     constructor ( private userMethods : userPgRepositoryClass, private authMethods : authPgRepositoryClass , private walletMethods : walletPgRepositoryClass) {};
@@ -25,17 +28,23 @@ class userServicesClass {
     get = async ( id : string ) => {
         const user = await this.userMethods.get(id);
         if(!user.id) throw new serverError(errorMessage.NOTFOUND);
+
+        activityMessage.FETCHED
         return user;
     }
 
     getAll = async () => {
         const users = await this.userMethods.getAll();
+
+        activityMessage.FETCHEDALL
         return users;
     }
 
     update = async (data : any) => {
         const user = await this.userMethods.update(data);
         if(!user.id) throw new serverError(errorMessage.NOTFOUND);
+
+        activityMessage.UPDATED
 
         return user;
     }
@@ -50,6 +59,8 @@ class userServicesClass {
         if(!refreshTokenData.id) throw new serverError(errorMessage.UNAUTHORIZED);
 
         await this.authMethods.deleteByUser(token);
+
+        activityMessage.DELETED
 
         return user;
     }

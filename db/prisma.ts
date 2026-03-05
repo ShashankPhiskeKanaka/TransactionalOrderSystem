@@ -7,7 +7,7 @@ dotenv.config();
 
 const pool = new pg.Pool({
     connectionString : process.env.DATABASE_URL,
-    max: 10, // maximum number of clients
+    max: 100, // maximum number of clients
     idleTimeoutMillis: 30000
 })
 

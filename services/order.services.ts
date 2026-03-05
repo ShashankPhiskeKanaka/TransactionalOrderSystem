@@ -3,6 +3,7 @@ import { errorMessage } from "../constants/error.messages.js";
 import type { orderPgRepositoryClass } from "../repositories/order.repository/order.pgrepository.js";
 import type { userAuthType } from "../repositories/user.repository/user.methods.js";
 import { serverError } from "../utils/error.utils.js";
+import { logUtil } from "../utils/log.utils.js";
 
 const activityMessage  = new activityMessagesClass("Order");
 
@@ -16,14 +17,14 @@ class orderServicesClass {
             ...data
         });
 
-        activityMessage.CREATED;
+        logUtil.logActivity(activityMessage.CREATED());
         return order;
     }
 
     get = async ( id: string, userData: userAuthType ) => {
         const order = await this.orderMethods.get(id, userData);
         if(!order.id) throw new serverError(errorMessage.NOTFOUND)
-        activityMessage.FETCHED;
+        logUtil.logActivity(activityMessage.FETCHED());
 
         return order;
     }

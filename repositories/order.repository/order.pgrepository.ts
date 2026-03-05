@@ -10,6 +10,17 @@ class orderPgRepositoryClass extends orderMethodsClass {
 
         const totalAmount = data.cartItems.reduce((sum : any, item : any) => { return sum + (item.price*item.quantity) }, 0)
         return await prisma.$transaction(async (tx) => {
+
+            const walletData = await tx.$queryRaw<any>`
+                SELECT * FROM "wallets"
+                WHERE "userId" = ${data.userId} AND ( "deletedAt" IS NULL )
+                FOR UPDATE
+            `
+            const wallet = walletData[0]
+
+            if (!wallet) throw new serverError(errorMessage.NOTFOUND);
+            if (wallet.balance < totalAmount) throw new serverError(errorMessage.NOTBALANCE);
+
             for (const item of data.cartItems) {
                 const updatedProduct = await tx.products.updateMany({
                     where : {
@@ -24,29 +35,14 @@ class orderPgRepositoryClass extends orderMethodsClass {
 
                 if(updatedProduct.count == 0) throw new serverError(errorMessage.OUTOFSTOCK);
             }
-
             const updatedWallet = await tx.wallets.updateMany({
                 where: {
-                    userId: data.userId,
-                    balance : { gte: totalAmount },
+                    id: wallet.id
                 },
                 data : {
                     balance : { decrement : totalAmount }
                 }
             });
-
-            if(updatedWallet.count == 0) throw new serverError(errorMessage.NOTBALANCE);
-
-            await tx.wallets.findUnique({
-                where : { userId: data.userId }
-            });
-
-            const walletData = await tx.$queryRaw<any>`
-                SELECT * FROM "wallets"
-                WHERE "userId" = ${data.userId} AND ( "deletedAt" IS NULL )
-                FOR UPDATE
-            `
-            const wallet = walletData[0]
 
             await tx.walletTransactions.create({
                 data: {
@@ -72,6 +68,8 @@ class orderPgRepositoryClass extends orderMethodsClass {
             })
 
             return order;
+        }, {
+            timeout : 10000
         })
     }
 

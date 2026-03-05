@@ -9,6 +9,8 @@ class orderControllerClass {
 
     create = async ( req: Request, res : Response ) => {
         const order = await this.orderService.create(req.body, req.user);
+        console.log(responseMessage.CREATED);
+        console.log(order);
         return res.json({
             success : true,
             message : responseMessage.CREATED,

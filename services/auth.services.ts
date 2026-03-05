@@ -4,6 +4,7 @@ import type { authPgRepositoryClass } from "../repositories/auth.repository/auth
 import type { userPgRepositoryClass } from "../repositories/user.repository/user.pgrepository.js";
 import { serverError } from "../utils/error.utils.js";
 import crypto from "crypto"
+import { logUtil } from "../utils/log.utils.js";
 
 class authServicesClass {
     constructor ( private userMethods : userPgRepositoryClass, private authMethods : authPgRepositoryClass ) {};
@@ -19,6 +20,7 @@ class authServicesClass {
             const familyId = crypto.randomUUID();
             const refreshToken = await this.authMethods.create({ userId: user.id ?? "", familyId });
 
+            logUtil.logActivity(`User with the id : ${user.id} and role : ${user.role} logged in`);
             return { token, refreshToken : refreshToken.id }
         }
 
@@ -36,6 +38,7 @@ class authServicesClass {
             await this.authMethods.deleteByFamily(refreshTokenData.familyId ?? "");
         }
 
+        logUtil.logActivity("User logged out")
         return;
     }
 
@@ -44,6 +47,8 @@ class authServicesClass {
         if(!user.id) throw new serverError(errorMessage.NOTFOUND);
 
         const forgetToken = authUtils.generateForgetToken(user.id ?? "");
+
+        logUtil.logActivity(`Forget password token generated for email : ${email}`);
         return forgetToken;
     }
 
@@ -57,6 +62,8 @@ class authServicesClass {
             id: user.id ?? "",
             password : hashedPassword
         });
+
+        logUtil.logActivity(`Password changed for user with the id : ${user.id}`);
     }
 
     generateTokens = async ( refreshToken: string ) => {
@@ -74,6 +81,8 @@ class authServicesClass {
             familyId : refreshTokenData.familyId ?? "",
             userId: user.id ?? ""
         });
+
+        logUtil.logActivity(`Refresh token and access token generated for user with the id : ${user.id}`);
 
         return { token, refreshToken : newRefreshToken.id }
     }

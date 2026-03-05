@@ -12,13 +12,14 @@ class userPgRepositoryClass extends userMethodsClass {
                     WHERE ("deletedAt" IS NULL) AND (email = ${data.email})
                     FOR UPDATE
                 `
-                if(user) throw new serverError(errorMessage.EXISTS);
+                if(user[0]) throw new serverError(errorMessage.EXISTS);
 
                 const newUser = await tx.users.create({
                     data : {
                         name : data.name,
                         email : data.email,
                         password: data.password,
+                        role : "ADMIN"
                     }
                 });
 

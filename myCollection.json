@@ -1,0 +1,741 @@
+{
+  "info": {
+    "_postman_id": "844e3931-d96b-433e-9667-46a92d0e0ce0",
+    "name": "TransactionalOrderSystem",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52291583",
+    "_collection_link": "https://go.postman.co/collection/52291583-844e3931-d96b-433e-9667-46a92d0e0ce0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "AUTH ROUTES",
+      "item": [
+        {
+          "name": "/v1/auth - LOGIN - POST",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"admin@gmail.com\",\r\n    \"password\" : \"Sh@shank123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/auth/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/auth/forget/:email - FORGET PASS - GET",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"ssp@gmail.com\",\r\n    \"password\" : \"Sh@shank123\"\r\n}"
+            },
+            "url": {
+              "raw": "localhost:3000/v1/auth/forget/ssp@gmail.com",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "auth",
+                "forget",
+                "ssp@gmail.com"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/auth/:token - CHANGE PASS - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\" : \"Ssp@12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY1NTg0MWYwLWIxZGQtNDE5Yy05NjkyLWU1ZjAxMjM2NjFkMCIsImlhdCI6MTc3MjUzNTQ0NywiZXhwIjoxNzcyNTM2MzQ3fQ.sXvZ6kO1TPq14s98SOfnafMpN-oOOJWhBsXyCahi-so",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "auth",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY1NTg0MWYwLWIxZGQtNDE5Yy05NjkyLWU1ZjAxMjM2NjFkMCIsImlhdCI6MTc3MjUzNTQ0NywiZXhwIjoxNzcyNTM2MzQ3fQ.sXvZ6kO1TPq14s98SOfnafMpN-oOOJWhBsXyCahi-so"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/auth/logout - LOGOUT - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/auth/logout",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "USER ROUTES",
+      "item": [
+        {
+          "name": "/v1/user - CREATE USER - GET",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"shashank\",\r\n    \"email\" : \"shashank@gmail.com\",\r\n    \"password\" : \"Sh@shank123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/user/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "user",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/user - FETCH USER - GET",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "localhost:3000/v1/user",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/user - UPDATE USER - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"ssp\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/user",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/user - DELETE USER - DELETE",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "localhost:3000/v1/user",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "USERS ROUTES",
+      "item": [
+        {
+          "name": "/v1/users - FETCH USERS - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/users/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "WALLET ROUTES",
+      "item": [
+        {
+          "name": "/v1/wallet - FETCH WALLET - POST",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"f639ff37-5235-4dfc-b596-f78cd2b4f218\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/wallet/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "wallet",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/wallets - FETCH WALLETS - GET",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "localhost:3000/v1/wallets",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "wallets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/wallet/increment - INCREASE BALANCE - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"1386e6e6-c6d7-4dc7-bf49-b20f44417734\",\r\n    \"balance\" : 100\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/wallet/increment",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "wallet",
+                "increment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/wallet/decrement - DECREASE BALANCE - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"1386e6e6-c6d7-4dc7-bf49-b20f44417734\",\r\n    \"balance\" : 50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/wallet/decrement",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "wallet",
+                "decrement"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PRODUCT ROUTES",
+      "item": [
+        {
+          "name": "/v1/product - FETCH PRODUCT - GET",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"ssp\",\r\n    \"email\" : \"shashank@gmail.com\",\r\n    \"password\" : \"Sh@shank123\"\r\n}"
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/product - CREATE PRODUCT - POST",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"banana\",\r\n    \"price\" : 10,\r\n    \"stock\" : 20\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/product - UPDATE PRODUCT - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"7337fc59-7cc2-4d11-927f-9872445e3a33\",\r\n    \"name\" : \"mango\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/product/increment - INCREASE STOCK - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"7337fc59-7cc2-4d11-927f-9872445e3a33\",\r\n    \"quantity\" : 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/increment",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                "increment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/product/decrement - DECREASE STOCK - PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\" : \"7337fc59-7cc2-4d11-927f-9872445e3a33\",\r\n    \"quantity\" : 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/decrement",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                "decrement"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/product/:id - DELETE PRODUCT - DELETE",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "localhost:3000/v1/product/7337fc59-7cc2-4d11-927f-9872445e3a33",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "product",
+                "7337fc59-7cc2-4d11-927f-9872445e3a33"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ORDER ROUTES",
+      "item": [
+        {
+          "name": "/v1/order - CREATE ORDER - POST",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "accessToken={{accessToken}}; refreshToken={{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cartItems\" : [\r\n        {\"productId\" : \"0ab36614-bb4e-484f-bab6-096066d78d95\", \"quantity\" : 1, \"price\" : 10}\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/v1/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/order/:id - FETCH ORDER - GET",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cartItems\" : [\r\n        {\"productId\" : \"78ba9df6-ad96-4194-a5bf-d44caef49c58\", \"quantity\" : 1, \"price\" : 10}\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "localhost:3000/v1/order/d5549f86-232c-4b07-baba-e8d94a8da7b0",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "order",
+                "d5549f86-232c-4b07-baba-e8d94a8da7b0"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "REPORT ROUTES",
+      "item": [
+        {
+          "name": "/v1/report/daily-orders - DAILY ORDERS REPORT - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/report/daily-orders",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "report",
+                "daily-orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/report/product-report - PRODUCTS REPORT - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/report/product-report",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "report",
+                "product-report"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/report/user-activity - USER REPORT - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/report/user-activity",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "report",
+                "user-activity"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/report/order-at/:date - ORDERS AT DATE - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/report/orders-at/2026-03",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "report",
+                "orders-at",
+                "2026-03"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/v1/report/orders-in/?start=date&end=date - ORDERS IN RANGE - GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/v1/report/orders-in/?start=2026-03-04&end=2026-03-05",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "v1",
+                "report",
+                "orders-in",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2026-03-04"
+                },
+                {
+                  "key": "end",
+                  "value": "2026-03-05"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
