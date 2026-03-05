@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { productServicesClass } from "../services/product.services.js";
 import { responseMessages } from "../constants/response.messages.js";
+import { redisUtils } from "../factory/utils.factory.js";
 
 const responseMessage = new responseMessages("Product");
 
@@ -9,6 +10,9 @@ class productControllerClass {
 
     create = async ( req: Request, res : Response ) => {
         const product = await this.productService.create(req.body);
+
+        redisUtils.invalidateKey("public", "product")
+
         return res.json({
             success : true,
             message : responseMessage.CREATED,
@@ -34,6 +38,9 @@ class productControllerClass {
     }
     updated = async ( req: Request, res : Response ) => {
         const product = await this.productService.update(req.body);
+
+        redisUtils.invalidateKey("public", "product")
+
         return res.json({
             success : true,
             message : responseMessage.UPDATED,
@@ -42,6 +49,9 @@ class productControllerClass {
     }
     incrementQuantity = async ( req: Request, res : Response ) => {
         const product = await this.productService.incrementQuantity(req.body);
+
+        redisUtils.invalidateKey("public", "product")
+
         return res.json({
             success : true,
             message : responseMessage.UPDATED,
@@ -50,6 +60,9 @@ class productControllerClass {
     }
     decrementQuantity = async ( req: Request, res : Response ) => {
         const product = await this.productService.decrementQuantity(req.body);
+
+        redisUtils.invalidateKey("public", "product")
+
         return res.json({
             success : true,
             message : responseMessage.UPDATED,
@@ -59,6 +72,9 @@ class productControllerClass {
 
     delete = async ( req : Request, res : Response ) => {
         const product = await this.productService.delete(req.params.id?.toString() ?? "");
+
+        redisUtils.invalidateKey("public", "product")
+
         return res.json({
             success : true,
             message : responseMessage.DELETED,

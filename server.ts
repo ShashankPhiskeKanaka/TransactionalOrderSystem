@@ -11,6 +11,7 @@ import { orderRouter } from "./routers/order.router.js";
 import { productRouter } from "./routers/product.router.js";
 import { reportRouter } from "./routers/report.router.js";
 import { logger } from "./middlewares/logger.js";
+
 dotenv.config();
 
 const app = express();

@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import type { userServicesClass } from "../services/user.services.js";
 import type { authServicesClass } from "../services/auth.services.js";
 import { responseMessages } from "../constants/response.messages.js";
+import { redisUtils } from "../factory/utils.factory.js";
 
 const userResponse = new responseMessages("User")
 const usersResponse = new responseMessages("Users");
@@ -20,6 +21,9 @@ class userControllerClass {
 
     get = async ( req: Request, res: Response ) => {
         const user = await this.userService.get(req.user.id);
+
+        redisUtils.invalidateKey(req.user.id, "user")
+
         return res.json({
             success : true,
             message: userResponse.FETCHED,
@@ -41,6 +45,9 @@ class userControllerClass {
             id: req.user.id,
             ...req.body
         });
+
+        redisUtils.invalidateKey(req.user.id, "user")
+
         return res.json({
             success : true,
             message : userResponse.UPDATED,
@@ -53,6 +60,8 @@ class userControllerClass {
 
         res.clearCookie("accessToken");
         res.clearCookie("refreshToken");
+
+        redisUtils.invalidateKey(req.user.id, "user");
 
         return res.json({
             success : true,

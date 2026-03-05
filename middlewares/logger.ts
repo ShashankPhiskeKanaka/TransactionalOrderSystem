@@ -11,7 +11,6 @@ const logger = (req : Request, res : Response, next : NextFunction) => {
         console.log(`${req.method} ${req.originalUrl} - duration : ${duration} ms`);
         console.log();
     });
-    // forwards the request
     next();
 }
 

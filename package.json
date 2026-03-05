@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec tsx server.ts",
-    "migrate" : "node-pg-migrate",
-    "migrate:create" : "node-pg-migrate create",
-    "migrate:up" : "node-pg-migrate up",
-    "migrate:down" : "node-pg-migrate down"
+    "migrate": "node-pg-migrate",
+    "migrate:create": "node-pg-migrate create",
+    "migrate:up": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down"
   },
   "keywords": [],
   "author": "",
@@ -34,8 +34,10 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "node-pg-migrate": "^8.0.4",
+    "node-redis": "^0.1.7",
     "nodemon": "^3.1.14",
     "pg": "^8.19.0",
+    "redis": "^5.11.0",
     "zod": "^4.3.6"
   }
 }
