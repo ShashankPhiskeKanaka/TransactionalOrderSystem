@@ -30,6 +30,8 @@ model users {
   orders orders[]
   wallet wallets?
   refreshTokens refreshTokens[]
+  sentMessages messages[] @relation("sentMessages")
+  receivedMessages messages[] @relation("receivedMessages")
 
   @@index([id])
   @@index([id, createdAt])
@@ -149,5 +151,22 @@ model auditLogs {
 
   @@index([model, modelId])
   @@index([performedBy])
+  @@index([id, createdAt])
+}
+
+model messages {
+  id String @id @default(uuid()) @db.Uuid
+  from String @db.Uuid
+  to String @db.Uuid
+
+  sender users @relation("sentMessages", fields: [from], references: [id])
+  receiver users @relation("receivedMessages", fields: [to], references: [id])
+
+  message String
+  createdAt DateTime @default(now()) @db.Timestamptz
+  deletedAt DateTime? @db.Timestamptz
+
+  @@index([from])
+  @@index([to])
   @@index([id, createdAt])
 }

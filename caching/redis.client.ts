@@ -13,6 +13,10 @@ client.on("error", (err) => {
 });
 
 await client.connect();
+
+const pubClient = client.duplicate();
+const subClient = client.duplicate();
+
 logUtil.logActivity("Redis connected");
 
-export { client }
+export { client, pubClient, subClient }

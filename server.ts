@@ -11,14 +11,23 @@ import { orderRouter } from "./routers/order.router.js";
 import { productRouter } from "./routers/product.router.js";
 import { reportRouter } from "./routers/report.router.js";
 import { logger } from "./middlewares/logger.js";
+import { rateLimiter } from "./middlewares/rateLimiter.js";
+import { idempotencyMiddleware } from "./middlewares/idempotency.middleware.js";
+import { createServer } from "node:http";
+import { SocketServer } from "./socket/socket.server.js";
 
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 app.use(express.json());
 app.use(cookieParser());
 
+SocketServer.init(httpServer);
+
 app.use(logger);
+app.use(rateLimiter);
+// app.use(idempotencyMiddleware);
 
 app.use("/v1/auth", authRouter);
 
@@ -36,6 +45,6 @@ app.use("/v1/report", reportRouter);
 
 app.use(globalErrorHandler.handleError);
 
-app.listen(process.env.PORT, () => {
-    console.log(`App running on port ${process.env.PORT}`)
+httpServer.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`)
 })

@@ -65,7 +65,6 @@ class orderReportsPgRepositoryClass {
 
     productsReport = async () : Promise<any> => {
         const productRevenue = await prisma.$queryRaw`
-            EXPLAIN ANALYZE
             SELECT
                 p.id AS "productId",
                 p.name AS "productName",

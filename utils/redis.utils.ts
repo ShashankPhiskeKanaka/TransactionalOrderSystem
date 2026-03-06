@@ -2,6 +2,7 @@ import type { Request } from "express";
 import { client } from "../caching/redis.client.js";
 import { serverError } from "./error.utils.js";
 import { logUtil } from "./log.utils.js";
+import crypto from "crypto";
 
 class redisUtilsClass {
     generateKey = ( req: Request ) => {
@@ -37,10 +38,18 @@ class redisUtilsClass {
             if(keys.length > 0) {
                 await client.del(keys);
             }
-            logUtil.logActivity("Orders cache cleared");
+            logUtil.logActivity(`${resource} cache cleared`);
         }catch (err : any) {
             throw new serverError(err);
         }
+    }
+
+    generatePayloadHash = ( req : Request ) => {
+        crypto.createHash('sha256').update(JSON.stringify({
+            body : req.body,
+            url : req.originalUrl,
+            method : req.method
+        })).digest("hex");
     }
 
 }

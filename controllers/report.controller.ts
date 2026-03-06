@@ -23,11 +23,28 @@ class reportControllerClass {
     }
 
     productReport = async ( req: Request, res: Response ) => {
-        const data = await this.reportService.productRevenue();
-        return res.json({
-            success : true,
-            message : "Products report generated",
-            data : data
+
+        res.setHeader('Content-type' , 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        res.write("Data connected to the stream \n\n");
+
+        const interval = setInterval(async () => {
+            const data = await this.reportService.productRevenue();
+
+            const payload = JSON.stringify({
+                success : true,
+                message : "Products report generated",
+                data : data
+            })
+
+            res.write(`data: ${payload} \n\n`)
+        }, 2000);
+
+        req.on("close", () => {
+            clearInterval(interval);
+            res.send();
         })
     }
 
