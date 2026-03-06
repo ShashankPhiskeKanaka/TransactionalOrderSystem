@@ -37,9 +37,9 @@ class SocketServer {
 
             if(userId) {
                 socket.join(userId);
-                socket.join("global");
             }
             logUtil.logActivity(`User ${userId} joined the room. Socket : ${socket.id}`);
+            console.log()
             registerChatHandlers(this.io, socket);
         });
 

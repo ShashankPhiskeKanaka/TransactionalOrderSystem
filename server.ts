@@ -15,6 +15,7 @@ import { rateLimiter } from "./middlewares/rateLimiter.js";
 import { idempotencyMiddleware } from "./middlewares/idempotency.middleware.js";
 import { createServer } from "node:http";
 import { SocketServer } from "./socket/socket.server.js";
+import { roomRouter } from "./routers/room.router.js";
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ app.use("/v1/order", orderRouter);
 app.use("/v1/product", productRouter);
 
 app.use("/v1/report", reportRouter);
+
+app.use("/v1/room", roomRouter);
 
 app.use(globalErrorHandler.handleError);
 
