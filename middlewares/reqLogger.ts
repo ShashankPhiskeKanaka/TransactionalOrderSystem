@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 
-const logger = (req : Request, res : Response, next : NextFunction) => {
+const reqLogger = (req : Request, res : Response, next : NextFunction) => {
     // generates a start timestamp
     const start = Date.now();
     // waits till the request execution is done and then runs this module
@@ -14,4 +14,4 @@ const logger = (req : Request, res : Response, next : NextFunction) => {
     next();
 }
 
-export { logger }
+export { reqLogger }

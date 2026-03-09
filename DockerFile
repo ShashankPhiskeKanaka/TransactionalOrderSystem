@@ -1,0 +1,13 @@
+FROM node:20-alpine
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install && npm install pm2 -g
+COPY . .
+
+# Generate Prisma/TS Build
+RUN npx prisma generate
+RUN npx tsc
+
+EXPOSE 3000
+# Run in cluster mode for internal load balancing
+CMD ["pm2-runtime", "start", "server.js", "-i", "max"]

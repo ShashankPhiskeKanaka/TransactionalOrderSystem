@@ -10,12 +10,17 @@ import { walletsRouter } from "./routers/wallet.routers/wallets.router.js";
 import { orderRouter } from "./routers/order.router.js";
 import { productRouter } from "./routers/product.router.js";
 import { reportRouter } from "./routers/report.router.js";
-import { logger } from "./middlewares/logger.js";
 import { rateLimiter } from "./middlewares/rateLimiter.js";
 import { idempotencyMiddleware } from "./middlewares/idempotency.middleware.js";
 import { createServer } from "node:http";
 import { SocketServer } from "./socket/socket.server.js";
 import { roomRouter } from "./routers/room.router.js";
+import { createAdapter } from "@socket.io/redis-adapter";
+import { createClient } from "redis";
+import { Server } from "socket.io"
+import { reqLogger } from "./middlewares/reqLogger.js";
+import logger from "./utils/logger.js";
+import os from "os"
 
 dotenv.config();
 
@@ -23,10 +28,22 @@ const app = express();
 const httpServer = createServer(app);
 app.use(express.json());
 app.use(cookieParser());
+app.use(reqLogger);
+
+const io = new Server(httpServer, {
+    cors: { origin: "*" }
+});
 
 SocketServer.init(httpServer);
 
-app.use(logger);
+app.get('/', (req, res) => {
+  res.send({
+    message: "Hello from the server!",
+    containerId: os.hostname(), // Shows which container handled the request
+    processId: process.pid      // Shows which PM2 worker handled the request
+  });
+});
+
 app.use(rateLimiter);
 // app.use(idempotencyMiddleware);
 
@@ -48,6 +65,17 @@ app.use("/v1/room", roomRouter);
 
 app.use(globalErrorHandler.handleError);
 
-httpServer.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`)
-})
+const pubClient = createClient({ url: "redis://redis:6379" });
+const subClient = pubClient.duplicate();
+
+// 1. Convert to number first
+const PORT = Number(process.env.PORT) || 3000;
+
+Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+  io.adapter(createAdapter(pubClient, subClient));
+  
+  // 2. Use the 'PORT' variable (which is a number) here
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    logger.info("Server started", { port: PORT, pid: process.pid });
+  });
+});
