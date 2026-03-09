@@ -37,11 +37,14 @@ const io = new Server(httpServer, {
 SocketServer.init(httpServer);
 
 app.get('/', (req, res) => {
-  res.send({
-    message: "Hello from the server!",
-    containerId: os.hostname(), // Shows which container handled the request
-    processId: process.pid      // Shows which PM2 worker handled the request
-  });
+
+    setTimeout(() => {
+        res.send({
+            message: "Hello from the server!",
+            containerId: os.hostname(), // Shows which container handled the request
+            processId: process.pid      // Shows which PM2 worker handled the request
+        });
+    }, 500);
 });
 
 app.use(rateLimiter);
@@ -65,7 +68,7 @@ app.use("/v1/room", roomRouter);
 
 app.use(globalErrorHandler.handleError);
 
-const pubClient = createClient({ url: "redis://redis:6379" });
+const pubClient = createClient({ url: "redis://localhost:6379" });
 const subClient = pubClient.duplicate();
 
 // 1. Convert to number first

@@ -35,7 +35,7 @@ class orderPgRepositoryClass extends orderMethodsClass {
 
                 if(updatedProduct.count == 0) throw new serverError(errorMessage.OUTOFSTOCK);
             }
-            const updatedWallet = await tx.wallets.updateMany({
+            await tx.wallets.updateMany({
                 where: {
                     id: wallet.id
                 },

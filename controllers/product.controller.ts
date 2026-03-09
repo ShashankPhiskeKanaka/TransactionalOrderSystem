@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import type { productServicesClass } from "../services/product.services.js";
 import { responseMessages } from "../constants/response.messages.js";
 import { redisUtils } from "../factory/utils.factory.js";
+import logger from "../utils/logger.js";
 
 const responseMessage = new responseMessages("Product");
 
@@ -9,6 +10,13 @@ class productControllerClass {
     constructor ( private productService : productServicesClass ) {};
 
     create = async ( req: Request, res : Response ) => {
+
+        logger.info("Product creation process started", {
+            path: req.path,
+            ip: req.ip,
+            userId: req.user.id || "public"
+        });
+
         const product = await this.productService.create(req.body);
 
         redisUtils.invalidateKey("public", "product")
@@ -21,6 +29,14 @@ class productControllerClass {
     }
 
     get = async ( req: Request, res : Response ) => {
+
+        logger.info("Product fetching process started", {
+            path: req.path,
+            ip: req.ip,
+            productId: req.params.id,
+            userId: req.user.id || "public"
+        });
+
         const product = await this.productService.get(req.params.id?.toString() ?? "");
         return res.json({
             success : true,
@@ -29,6 +45,13 @@ class productControllerClass {
         });
     }
     getAll = async ( req: Request, res : Response ) => {
+
+        logger.info("Products fetching process initiated", {
+            path: req.path,
+            ip: req.ip,
+            userId: req.user.id || "public"
+        });
+
         const product = await this.productService.getAll();
         return res.json({
             success : true,
@@ -37,6 +60,14 @@ class productControllerClass {
         });
     }
     updated = async ( req: Request, res : Response ) => {
+
+        logger.info("Product updation process started", {
+            path: req.path,
+            ip: req.ip,
+            userId: req.user.id,
+            productId: req.body.id
+        });
+
         const product = await this.productService.update(req.body);
 
         redisUtils.invalidateKey("public", "product")
